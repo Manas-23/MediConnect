@@ -1,58 +1,53 @@
-import React, { useContext, useEffect, useState } from "react";
-import { AppContext } from "../context/AppContext.jsx";
-import { useNavigate } from "react-router-dom";
+import React, { useContext, useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { AppContext } from '../context/AppContext'
 
 const RelatedDoctors = ({ docId, speciality }) => {
-  const { doctors } = useContext(AppContext);
-  const [relDoc, setRelDoc] = useState([]);
-  const navigate = useNavigate();
+  const { doctors } = useContext(AppContext)
+  const navigate = useNavigate()
+  const [related, setRelated] = useState([])
 
   useEffect(() => {
     if (doctors.length > 0 && speciality) {
-      const doctorsData = doctors.filter(
-        (doc) => doc.speciality === speciality && doc._id !== docId
-      );
-      setRelDoc(doctorsData);
+      const filtered = doctors.filter(d => d.speciality === speciality && d._id !== docId)
+      setRelated(filtered.slice(0, 3))
     }
-  }, [doctors, docId, speciality]);
+  }, [doctors, docId, speciality])
+
+  if (related.length === 0) return null
+
   return (
-    <div className="flex flex-col items-center gap-4 my-16 text-gray-900 md:mx-10">
-      <h1 className="text-3xl font-medium">Related Doctors</h1>
-      <p className="sm:w-1/3 text-center text-sm">
-        Simply browse through our extensive list of trusted doctors.
-      </p>
-      <div className="w-full grid grid-cols-auto gap-4 pt-5 gap-y-6 px-3 sm:px-0">
-        {relDoc.slice(0, 5).map((item, index) => (
+    <div>
+      <h2 className='text-xl font-bold text-white mb-6'>
+        Related <span className='glow-text'>Doctors</span>
+      </h2>
+      <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5'>
+        {related.map((doctor, index) => (
           <div
             key={index}
-            className="border border-blue-200 rounded-xl overflow-hidden cursor-pointer hover:translate-y-[-10px] transition-all duration-500"
-            onClick={() => {
-              navigate(`/appointment/${item._id}`);
-              scrollTo(0, 0);
-            }}
+            onClick={() => { navigate(`/appointment/${doctor._id}`); scrollTo(0, 0) }}
+            className='glass-card p-5 cursor-pointer group'
           >
-            <img className="bg-blue-50" src={item.image} alt="" />
-            <div className="p-4">
-              <div
-                className={`flex items-center gap-2 text-sm text-center ${
-                  item.available ? "text-green-500" : "text-gray-500"
-                }`}
-              >
-                <p
-                  className={`w-2 h-2 ${
-                    item.available ? "bg-green-500" : "bg-gray-500"
-                  } rounded-full`}
-                ></p>
-                <p>{item.available ? "Available" : "Not Available"}</p>
+            <div className='relative mb-4 overflow-hidden rounded-2xl'>
+              <img
+                src={doctor.image}
+                alt={doctor.name}
+                className='w-full h-40 object-cover group-hover:scale-105 transition-transform duration-500'
+              />
+              <div className='absolute top-3 right-3 flex items-center gap-1.5 bg-black/60 backdrop-blur-sm border border-white/10 rounded-full px-2 py-1'>
+                <div className='pulse-dot'></div>
+                <span className='text-green-400 text-xs'>Available</span>
               </div>
-              <p className="text-gray-900 text-lg font-medium">{item.name}</p>
-              <p className="text-gray-600 text-sm">{item.speciality}</p>
             </div>
+            <h3 className='text-white font-bold group-hover:text-blue-400 transition-colors'>{doctor.name}</h3>
+            <p className='text-slate-400 text-sm'>{doctor.speciality}</p>
+           <p className='text-blue-400 text-sm font-semibold mt-2'>₹{doctor.fee || doctor.fees}</p>
           </div>
         ))}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default RelatedDoctors;
+export default RelatedDoctors
+

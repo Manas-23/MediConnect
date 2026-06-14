@@ -19,31 +19,52 @@ const App = () => {
   const { aToken } = useContext(AdminContext);
   const { dToken } = useContext(DoctorContext);
   return aToken || dToken ? (
-    <div className="bg-[#F8F9FD]">
-      <ToastContainer />
+    <div className="min-h-screen bg-[#0a0a0f]">
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        theme="dark"
+        toastStyle={{
+          background: '#0f0f1a',
+          border: '1px solid rgba(255,255,255,0.1)',
+          color: '#e2e8f0'
+        }}
+      />
       <Navbar />
       <div className="flex items-start">
         <Sidebar />
-        <Routes>
-          {/* Admin Routes */}
-          <Route path="/" element={<Dashbaord />} />
-          <Route path="/all-appointments" element={<AllAppointments />} />
-          <Route path="/add-doctor" element={<AddDoctor />} />
-          <Route path="/doctors-list" element={<DoctorsList />} />
+        <div className="flex-1">
+          <Routes>
+            {/* Admin Routes */}
+            <Route path="/" element={<Dashbaord />} />
+            <Route path="/all-appointments" element={<AllAppointments />} />
+            <Route path="/add-doctor" element={<AddDoctor />} />
+            <Route path="/doctors-list" element={<DoctorsList />} />
 
-          {/* Doctor Routes */}
-          <Route path="/doctor" element={<DoctorDashboard />} />
-          <Route path="/doctor/appointments" element={<DoctorAppointments />} />
-          <Route path="/doctor/profile" element={<DoctorProfile />} />
-        </Routes>
+            {/* Doctor Routes */}
+            <Route path="/doctor" element={<DoctorDashboard />} />
+            <Route path="/doctor/appointments" element={<DoctorAppointments />} />
+            <Route path="/doctor/profile" element={<DoctorProfile />} />
+          </Routes>
+        </div>
       </div>
     </div>
   ) : (
-    <>
-      <ToastContainer />
+    <div className="min-h-screen bg-[#0a0a0f]">
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        theme="dark"
+        toastStyle={{
+          background: '#0f0f1a',
+          border: '1px solid rgba(255,255,255,0.1)',
+          color: '#e2e8f0'
+        }}
+      />
       <Login />
-    </>
+    </div>
   );
 };
 
 export default App;
+

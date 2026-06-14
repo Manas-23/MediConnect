@@ -10,13 +10,24 @@ import Contact from "./pages/Contact.jsx";
 import Appointments from "./pages/Appointments.jsx";
 import Navbar from "./components/Navbar.jsx";
 import Footer from "./components/Footer.jsx";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import VerifyStripe from './pages/VerifyStripe.jsx';
 
 const App = () => {
   return (
-    <div className="mx-4 sm:mx-[10%]">
-      <ToastContainer />
+    <div className="min-h-screen bg-[#0a0a0f]">
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        theme="dark"
+        toastStyle={{
+          background: '#0f0f1a',
+          border: '1px solid rgba(255,255,255,0.1)',
+          color: '#e2e8f0'
+        }}
+      />
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
@@ -28,6 +39,7 @@ const App = () => {
         <Route path="/my-profile" element={<MyProfile />} />
         <Route path="/my-appointments" element={<MyAppointments />} />
         <Route path="/appointment/:docId" element={<Appointments />} />
+        <Route path='/verify-stripe' element={<VerifyStripe />} />
       </Routes>
       <Footer />
     </div>
@@ -35,3 +47,5 @@ const App = () => {
 };
 
 export default App;
+
+ 

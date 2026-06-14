@@ -1,37 +1,48 @@
-import React from "react";
-import { specialityData } from "../assets/assets";
-import { Link } from "react-router-dom";
+import React from 'react'
+import { useNavigate } from 'react-router-dom'
+import { specialityData } from '../assets/assets'
 
 const SpecialityMenu = () => {
-  return (
-    <div
-      className="flex flex-col items-center gap-4 py-16 text-gray-800"
-      id="speciality"
-    >
-      <h1 className="text-3xl font-medium">Find by Speciality</h1>
-      <p className="sm:w-1/3 text-center text-sm">
-        Simply browse through our extensive list of trusted doctors, schedule
-        your appointment hassle-free.
-      </p>
-      <div className="flex sm:justify-center gap-4 pt-5 w-full overflow-scroll">
-        {specialityData.map((item, index) => (
-          <Link
-            onClick={() => scrollTo(0, 0)}
-            className="flex flex-col items-center text-xs cursor-pointer flex-shrink-0 hover:translate-y-[-10px] transition-all duration-500"
-            to={`/doctors/${item.speciality}`}
-            key={index}
-          >
-            <img
-              className="w-16 sm:w-24 mb-2"
-              src={item.image}
-              alt={`${item.speciality} image`}
-            />
-            <p>{item.speciality}</p>
-          </Link>
-        ))}
-      </div>
-    </div>
-  );
-};
+  const navigate = useNavigate()
 
-export default SpecialityMenu;
+  const icons = ['🫀', '🧠', '🦷', '👶', '🦴', '👁️', '🩺', '💊', '🤰', '🧴']
+
+  return (
+    <section className='py-24 bg-[#0f0f1a]'>
+      <div className='max-w-7xl mx-auto px-6'>
+
+        {/* Header */}
+        <div className='text-center mb-16'>
+          <span className='badge mb-4 inline-block'>Browse By</span>
+          <h2 className='section-title text-white mb-4'>
+            Find by <span className='glow-text'>Speciality</span>
+          </h2>
+          <p className='text-slate-400 max-w-lg mx-auto text-lg'>
+            Choose your medical speciality and connect with the right expert instantly.
+          </p>
+        </div>
+
+        {/* Speciality Grid */}
+        <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4'>
+          {specialityData.map((item, index) => (
+            <div
+              key={index}
+              onClick={() => { navigate(`/doctors/${item.speciality}`); scrollTo(0, 0) }}
+              className='glass-card p-6 cursor-pointer group text-center'
+            >
+              <div className='text-4xl mb-3 group-hover:scale-110 transition-transform duration-300'>
+                {icons[index % icons.length]}
+              </div>
+              <div className='text-slate-300 text-sm font-medium group-hover:text-blue-400 transition-colors'>
+                {item.speciality}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+export default SpecialityMenu
+

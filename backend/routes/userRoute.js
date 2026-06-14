@@ -1,4 +1,5 @@
 import express from "express";
+import Stripe from 'stripe';
 import {
   registerUser,
   loginUser,
@@ -9,6 +10,8 @@ import {
   cancelAppointment,
   paymentRazorpay,
   verifyRazorpay,
+  paymentStripe,
+  verifyStripe
 } from "../controllers/userController.js";
 import authUser from "../middleware/authUser.js";
 import upload from "../middleware/multer.js";
@@ -30,5 +33,6 @@ userRouter.get("/appointments", authUser, listAppointment);
 userRouter.post("/cancel-appointment", authUser, cancelAppointment);
 userRouter.post("/payment-razorpay", authUser, paymentRazorpay);
 userRouter.post("/verifyRazorpay", authUser, verifyRazorpay);
-
+userRouter.post('/payment-stripe', authUser, paymentStripe);
+userRouter.post('/verify-stripe', authUser, verifyStripe);
 export default userRouter;

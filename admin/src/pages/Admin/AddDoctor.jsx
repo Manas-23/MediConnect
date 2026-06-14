@@ -11,7 +11,7 @@ const AddDoctor = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false); // For toggling password visibility
+  const [showPassword, setShowPassword] = useState(false);
   const [experience, setExperience] = useState("1 Year");
   const [fee, setFee] = useState("");
   const [about, setAbout] = useState("");
@@ -20,7 +20,7 @@ const AddDoctor = () => {
   const [address1, setAddress1] = useState("");
   const [address2, setAddress2] = useState("");
   const { backendUrl, aToken } = useContext(AdminContext);
-  const [loading, setLoading] = useState(false); // For showing loader on form submission
+  const [loading, setLoading] = useState(false);
 
   const onSubmitHandler = async (e) => {
     e.preventDefault();
@@ -28,7 +28,7 @@ const AddDoctor = () => {
       if (!docImage) {
         return toast.error("Image not Selected");
       }
-      setLoading(true); // Start loader
+      setLoading(true);
       const formData = new FormData();
       formData.append("image", docImage);
       formData.append("name", name);
@@ -48,9 +48,7 @@ const AddDoctor = () => {
         backendUrl + "/api/admin/add-doctor",
         formData,
         {
-          headers: {
-            aToken,
-          },
+          headers: { aToken },
         }
       );
       if (data.success) {
@@ -68,26 +66,39 @@ const AddDoctor = () => {
         toast.error(data.message);
       }
     } catch (error) {
-      console.error(error);
       toast.error(error.message);
     } finally {
-      setLoading(false); // Stop loader
+      setLoading(false);
     }
   };
 
   return (
-    <form className="m-5 w-full" onSubmit={(e) => onSubmitHandler(e)}>
-      <p className="mb-3 text-xl font-medium">Add Doctor</p>
-      <div className="bg-white px-8 py-8 border rounded w-full max-w-4xl max-h-[80vh] overflow-y-scroll">
-        <div className="flex items-center gap-4 mb-8 text-gray-500">
-          <label htmlFor="docImage">
-            <img
-              src={
-                docImage ? URL.createObjectURL(docImage) : assets.upload_area
-              }
-              alt=""
-              className="w-16 bg-gray-100 rounded-full cursor-pointer"
-            />
+    <form className="p-6 w-full" onSubmit={onSubmitHandler}>
+
+      {/* Header */}
+      <div className="mb-6">
+        <span className="badge mb-2 inline-block">Manage Doctors</span>
+        <h1 className="text-3xl font-black text-white">
+          Add <span className="glow-text">Doctor</span>
+        </h1>
+      </div>
+
+      <div className="glass-card p-8 w-full max-w-4xl">
+
+        {/* Upload Image */}
+        <div className="flex items-center gap-5 mb-8">
+          <label htmlFor="docImage" className="cursor-pointer group">
+            <div className="relative w-20 h-20 rounded-2xl overflow-hidden bg-white/5 border-2 border-dashed border-white/10 group-hover:border-blue-500/40 transition-all flex items-center justify-center">
+              {docImage ? (
+                <img
+                  src={URL.createObjectURL(docImage)}
+                  alt=""
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <span className="text-3xl">📷</span>
+              )}
+            </div>
           </label>
           <input
             onChange={(e) => setDocImg(e.target.files[0])}
@@ -95,149 +106,158 @@ const AddDoctor = () => {
             id="docImage"
             className="hidden"
           />
-          <p>
-            Upload Doctor <br />
-            Picture
-          </p>
+          <div>
+            <p className="text-white font-semibold text-sm">Upload Doctor Picture</p>
+            <p className="text-slate-500 text-xs">PNG or JPG, square recommended</p>
+          </div>
         </div>
-        <div className="flex flex-col lg:flex-row items-start gap-10 text-gray-600">
+
+        <div className="flex flex-col lg:flex-row gap-10">
+
+          {/* Left Column */}
           <div className="w-full lg:flex-1 flex flex-col gap-4">
-            <div className="flex-1 flex flex-col gap-1">
-              <p>Doctor Name</p>
+
+            <div>
+              <label className="text-slate-400 text-sm mb-2 block">Doctor Name</label>
               <input
-                className="border rounded px-3 py-2 outline-primary"
+                className="dark-input"
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                placeholder="Name"
+                placeholder="Dr. John Doe"
                 required
               />
             </div>
-            <div className="flex-1 flex flex-col gap-1">
-              <p>Doctor Email</p>
+
+            <div>
+              <label className="text-slate-400 text-sm mb-2 block">Doctor Email</label>
               <input
-                className="border rounded px-3 py-2 outline-primary"
+                className="dark-input"
                 type="email"
-                placeholder="Email"
+                placeholder="doctor@prescripto.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
               />
             </div>
-            <div className="flex-1 flex flex-col gap-1">
-              <p>Doctor Password</p>
+
+            <div>
+              <label className="text-slate-400 text-sm mb-2 block">Doctor Password</label>
               <div className="relative">
                 <input
-                  className="border rounded px-3 py-2 w-full outline-primary"
+                  className="dark-input pr-12"
                   type={showPassword ? "text" : "password"}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  placeholder="Password"
+                  placeholder="••••••••"
                   required
                 />
                 <span
-                  className="absolute top-1/2 right-3 transform -translate-y-1/2 cursor-pointer"
+                  className="absolute right-4 top-1/2 -translate-y-1/2 cursor-pointer text-slate-400 hover:text-white transition-colors"
                   onClick={() => setShowPassword(!showPassword)}
                 >
                   {showPassword ? <FaEyeSlash /> : <FaEye />}
                 </span>
               </div>
             </div>
-            <div className="flex-1 flex flex-col gap-1">
-              <p>Experience</p>
+
+            <div>
+              <label className="text-slate-400 text-sm mb-2 block">Experience</label>
               <select
-                className="border rounded px-3 py-2 outline-primary"
+                className="dark-input"
                 value={experience}
                 onChange={(e) => setExperience(e.target.value)}
               >
-                <option value="1 Year">1 Year</option>
-                <option value="2 Year">2 Year</option>
-                <option value="3 Year">3 Year</option>
-                <option value="4 Year">4 Year</option>
-                <option value="5 Year">5 Year</option>
-                <option value="6 Year">6 Year</option>
-                <option value="7 Year">7 Year</option>
-                <option value="8 Year">8 Year</option>
-                <option value="9 Year">9 Year</option>
-                <option value="10 Year">10 Year</option>
+                {[1,2,3,4,5,6,7,8,9,10].map(y => (
+                  <option key={y} value={`${y} Year`} className="bg-[#0f0f1a]">{y} Year</option>
+                ))}
               </select>
             </div>
-            <div className="flex-1 flex flex-col gap-1">
-              <p>Doctor Fee</p>
+
+            <div>
+              <label className="text-slate-400 text-sm mb-2 block">Doctor Fee (₹)</label>
               <input
                 type="number"
-                placeholder="Fee"
+                placeholder="500"
                 value={fee}
                 onChange={(e) => setFee(e.target.value)}
-                className="border rounded px-3 py-2 outline-primary"
+                className="dark-input"
                 required
               />
             </div>
           </div>
+
+          {/* Right Column */}
           <div className="w-full lg:flex-1 flex flex-col gap-4">
-            <div className="flex-1 flex flex-col gap-1">
-              <p>Speciality</p>
+
+            <div>
+              <label className="text-slate-400 text-sm mb-2 block">Speciality</label>
               <select
                 value={speciality}
                 onChange={(e) => setSpeciality(e.target.value)}
-                className="border rounded px-3 py-2 outline-primary"
+                className="dark-input"
               >
-                <option value="General physician">General physician</option>
-                <option value="Gynecologist">Gynecologist</option>
-                <option value="Dermatologist">Dermatologist</option>
-                <option value="Pediatricians">Pediatricians</option>
-                <option value="Neurologist">Neurologist</option>
-                <option value="Gastroenterologist">Gastroenterologist</option>
+                {["General physician","Gynecologist","Dermatologist","Pediatricians","Neurologist","Gastroenterologist"].map(s => (
+                  <option key={s} value={s} className="bg-[#0f0f1a]">{s}</option>
+                ))}
               </select>
             </div>
-            <div className="flex-1 flex flex-col gap-1">
-              <p>Education</p>
+
+            <div>
+              <label className="text-slate-400 text-sm mb-2 block">Education</label>
               <input
                 type="text"
-                placeholder="Education"
+                placeholder="MBBS, MD"
                 value={degree}
                 onChange={(e) => setDegree(e.target.value)}
-                className="border rounded px-3 py-2 outline-primary"
+                className="dark-input"
                 required
               />
             </div>
-            <div className="flex-1 flex flex-col gap-1">
-              <p>Address</p>
-              <input
-                type="text"
-                placeholder="Address 1"
-                value={address1}
-                onChange={(e) => setAddress1(e.target.value)}
-                className="border rounded px-3 py-2 outline-primary"
-                required
-              />
-              <input
-                type="text"
-                placeholder="Address 2"
-                value={address2}
-                onChange={(e) => setAddress2(e.target.value)}
-                className="border rounded px-3 py-2 outline-primary"
-                required
-              />
+
+            <div>
+              <label className="text-slate-400 text-sm mb-2 block">Address</label>
+              <div className="space-y-3">
+                <input
+                  type="text"
+                  placeholder="Address Line 1"
+                  value={address1}
+                  onChange={(e) => setAddress1(e.target.value)}
+                  className="dark-input"
+                  required
+                />
+                <input
+                  type="text"
+                  placeholder="Address Line 2"
+                  value={address2}
+                  onChange={(e) => setAddress2(e.target.value)}
+                  className="dark-input"
+                  required
+                />
+              </div>
             </div>
           </div>
         </div>
-        <div>
-          <p className="mt-4 mb-2">About Doctor</p>
+
+        {/* About */}
+        <div className="mt-6">
+          <label className="text-slate-400 text-sm mb-2 block">About Doctor</label>
           <textarea
-            className="w-full px-4 pt-2 border rounded "
-            placeholder="Write About Doctor"
+            className="dark-input resize-none"
+            placeholder="Write a short bio about the doctor..."
             value={about}
             onChange={(e) => setAbout(e.target.value)}
             rows={5}
             required
           />
         </div>
+
+        {/* Submit */}
         <button
-          className="bg-primary px-10 py-3 mt-4 text-white rounded-full flex items-center justify-center"
-          disabled={loading} // Disable button while loading
+          className="btn-primary mt-6 px-10 py-4 flex items-center justify-center gap-2 disabled:opacity-50"
+          disabled={loading}
         >
-          {loading ? <ClipLoader size={24} color="#ffffff" /> : "Add Doctor"}
+          {loading ? <ClipLoader size={20} color="#ffffff" /> : "Add Doctor →"}
         </button>
       </div>
     </form>
@@ -245,3 +265,5 @@ const AddDoctor = () => {
 };
 
 export default AddDoctor;
+
+

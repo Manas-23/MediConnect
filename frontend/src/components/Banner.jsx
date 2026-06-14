@@ -1,37 +1,61 @@
-import React from "react";
-import { assets } from "../assets/assets";
-import { useNavigate } from "react-router-dom";
+import React from 'react'
+import { useNavigate } from 'react-router-dom'
 
 const Banner = () => {
-  const navigate = useNavigate();
-  return (
-    <div className="flex bg-primary rounded-lg px-6 sm:px-10 md:px-14 lg:px-12 md:mx-10">
-      {/* Left Side */}
-      <div className="flex-1 py-8 sm:py-10 md:py-16 lg:py-24 lg:pl-5">
-        <div className="text=xl sm:text-2xl md:text-3xl lg:text-5xl font-semibold text-white">
-          <p className="mt-4">Book Appointment</p>
-          <p>With 100+ Trusted Doctors</p>
-        </div>
-        <button
-          onClick={() => {
-            navigate("/login");
-            scrollTo(0, 0);
-          }}
-          className="bg-white text-sm sm:text-base text-gray-600 px-8 py-3 rounded-full mt-6 hover:scale-105 transition-all"
-        >
-          Create Account
-        </button>
-      </div>
-      {/* Right Side */}
-      <div className="hidden md:block md:w-1/2 lg:w-[370px] relative">
-        <img
-          className="w-full absolute bottom-0 right-0 max-w-md"
-          src={assets.appointment_img}
-          alt=""
-        />
-      </div>
-    </div>
-  );
-};
+  const navigate = useNavigate()
 
-export default Banner;
+  return (
+    <section className='py-24 bg-[#0a0a0f]'>
+      <div className='max-w-7xl mx-auto px-6'>
+        <div className='relative overflow-hidden rounded-3xl bg-gradient-to-br from-blue-600/20 to-purple-600/20 border border-white/10 p-16 text-center'>
+
+          {/* Background glow */}
+          <div className='absolute top-0 left-1/2 -translate-x-1/2 w-96 h-32 bg-blue-500/20 blur-3xl'></div>
+
+          <div className='relative z-10 space-y-6'>
+            <span className='badge inline-block'>Get Started Today</span>
+            <h2 className='text-4xl lg:text-5xl font-black text-white'>
+              Your Health,<br />
+              <span className='glow-text'>Our Priority</span>
+            </h2>
+            <p className='text-slate-400 text-lg max-w-xl mx-auto'>
+              Join thousands of patients who trust Prescripto for their healthcare needs. Book your first appointment today.
+            </p>
+            <div className='flex flex-wrap gap-4 justify-center'>
+              <button
+                onClick={() => navigate('/login')}
+                className='btn-primary px-10 py-4 text-base'
+              >
+                Create Free Account
+              </button>
+              <button
+                onClick={() => navigate('/doctors')}
+                className='px-10 py-4 rounded-xl border border-white/10 text-slate-300 hover:text-white hover:border-white/20 font-medium transition-all text-base'
+              >
+                Browse Doctors
+              </button>
+            </div>
+
+            {/* Trust Indicators */}
+            <div className='flex flex-wrap justify-center gap-8 pt-4'>
+              {[
+                { icon: '🔒', text: 'HIPAA Compliant' },
+                { icon: '⚡', text: 'Instant Booking' },
+                { icon: '💳', text: 'Secure Payments' },
+                { icon: '📱', text: '24/7 Support' },
+              ].map((item, i) => (
+                <div key={i} className='flex items-center gap-2 text-slate-400 text-sm'>
+                  <span>{item.icon}</span>
+                  <span>{item.text}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+export default Banner
+

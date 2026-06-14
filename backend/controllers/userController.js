@@ -1,3 +1,4 @@
+import Stripe from 'stripe';
 import validator from "validator";
 import bcrypt from "bcrypt";
 import userModel from "../model/userModel.js";
@@ -281,6 +282,57 @@ const verifyRazorpay = async (req, res) => {
   }
 };
 
+// Stripe Payment
+const paymentStripe = async (req, res) => {
+  try {
+    const { appointmentId } = req.body
+    const stripe = new (await import('stripe')).default(process.env.STRIPE_SECRET_KEY)
+
+    const appointmentData = await appointmentModel.findById(appointmentId)
+    if (!appointmentData || appointmentData.cancelled) {
+      return res.json({ success: false, message: 'Appointment not found or cancelled' })
+    }
+
+    const currency = process.env.STRIPE_CURRENCY || 'inr'
+
+    const session = await stripe.checkout.sessions.create({
+      payment_method_types: ['card'],
+      line_items: [{
+        price_data: {
+          currency,
+          product_data: {
+            name: `Appointment with ${appointmentData.docData?.name || 'Doctor'}`,
+            description: `Date: ${appointmentData.slotDate} at ${appointmentData.slotTime}`,
+          },
+          unit_amount: (appointmentData.amount || appointmentData.docData?.fee || appointmentData.docData?.fees || 500) * 100,
+        },
+        quantity: 1,
+      }],
+      mode: 'payment',
+      success_url: `${process.env.FRONTEND_URL}/verify-stripe?success=true&appointmentId=${appointmentData._id}`,
+      cancel_url: `${process.env.FRONTEND_URL}/verify-stripe?success=false&appointmentId=${appointmentData._id}`,
+    })
+
+    res.json({ success: true, session_url: session.url })
+  } catch (error) {
+    console.log(error)
+    res.json({ success: false, message: error.message })
+  }
+}
+
+const verifyStripe = async (req, res) => {
+  try {
+    const { appointmentId, success } = req.body
+    if (success === 'true') {
+      await appointmentModel.findByIdAndUpdate(appointmentId, { payment: true })
+      return res.json({ success: true, message: 'Payment successful' })
+    }
+    res.json({ success: false, message: 'Payment failed' })
+  } catch (error) {
+    res.json({ success: false, message: error.message })
+  }
+}
+
 export {
   registerUser,
   loginUser,
@@ -291,4 +343,6 @@ export {
   cancelAppointment,
   paymentRazorpay,
   verifyRazorpay,
+  paymentStripe,
+  verifyStripe
 };

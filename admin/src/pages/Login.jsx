@@ -1,145 +1,142 @@
-import React, { useContext, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { assets } from "../assets/assets";
-import { AdminContext } from "../context/AdminContext";
-import { FaEye, FaEyeSlash } from "react-icons/fa";
-import axios from "axios";
-import { toast } from "react-toastify";
-import { DoctorContext } from "../context/DoctorContext";
-
-const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+import React, { useContext, useState } from 'react'
+import axios from 'axios'
+import { AdminContext } from '../context/AdminContext'
+import { DoctorContext } from '../context/DoctorContext'
+import { toast } from 'react-toastify'
 
 const Login = () => {
-  const [state, setState] = useState("Admin");
-  const [loading, setLoading] = useState(false);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false); // State for toggling password visibility
-  const { setAToken, backendUrl } = useContext(AdminContext);
-  const { setDToken, dToken } = useContext(DoctorContext);
-  const navigate = useNavigate();
+  const [state, setState] = useState('Admin')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [showPassword, setShowPassword] = useState(false)
+  const [loading, setLoading] = useState(false)
 
-  const onSubmitHandler = async (event) => {
-    event.preventDefault();
-    setLoading(true);
+  const { setAToken, backendUrl } = useContext(AdminContext)
+  const { setDToken } = useContext(DoctorContext)
+
+  const onSubmitHandler = async (e) => {
+    e.preventDefault()
+    setLoading(true)
     try {
-      if (state === "Admin") {
-        const { data } = await axios.post(backendUrl + "/api/admin/login", {
-          email,
-          password,
-        });
+      if (state === 'Admin') {
+        const { data } = await axios.post(backendUrl + '/api/admin/login', { email, password })
         if (data.success) {
-          localStorage.setItem("aToken", data.token);
-          await sleep(2000);
-          toast.success(data.message);
-          setAToken(data.token);
+          localStorage.setItem('aToken', data.token)
+          setAToken(data.token)
+          toast.success('Welcome back, Admin!')
         } else {
-          toast.error(data.message);
+          toast.error(data.message)
         }
       } else {
-        const { data } = await axios.post(backendUrl + "/api/doctor/login", {
-          email,
-          password,
-        });
+        const { data } = await axios.post(backendUrl + '/api/doctor/login', { email, password })
         if (data.success) {
-          localStorage.setItem("dToken", data.token);
-          navigate("/doctor");
-          await sleep(2000);
-          setDToken(data.token);
+          localStorage.setItem('dToken', data.token)
+          setDToken(data.token)
+          toast.success('Welcome back, Doctor!')
         } else {
-          toast.error(data.message);
+          toast.error(data.message)
         }
       }
-    } catch (error) {
-      console.error(error);
-      toast.error(error.message);
-    } finally {
-      setLoading(false);
+    } catch (err) {
+      toast.error('Login failed. Check credentials.')
     }
-  };
+    setLoading(false)
+  }
 
   return (
-    <form
-      className="min-h-[80vh] flex items-center"
-      onSubmit={(event) => onSubmitHandler(event)}
-    >
-      <div className="flex flex-col gap-3 m-auto items-start p-8 min-w-[340px] sm:min-w-96 border rounded-xl text-[#5E5E5E] text-lg shadow-lg">
-        <p className="text-2xl font-semibold m-auto">
-          <span className="text-primary">{state}</span> Login
-        </p>
-        <div className="w-full">
-          <p>Email</p>
-          <input
-            type="email"
-            className="border border-[#DADADA] rounded w-full p-2 mt-1 outline-primary"
-            value={email}
-            onChange={(event) => setEmail(event.target.value)}
-            required
-          />
-        </div>
-        <div className="w-full relative">
-          <p>Password</p>
-          <input
-            type={showPassword ? "text" : "password"} // Toggle between text and password
-            className="border border-[#DADADA] rounded w-full p-2 mt-1 outline-primary"
-            value={password}
-            onChange={(event) => setPassword(event.target.value)}
-            required
-          />
-          <span
-            className="absolute right-3 top-11 cursor-pointer"
-            onClick={() => setShowPassword(!showPassword)} // Toggle the state
-          >
-            {showPassword ? <FaEyeSlash /> : <FaEye />} {/* Toggle text */}
-          </span>
+    <div className='min-h-screen bg-[#0a0a0f] flex items-center justify-center px-4 relative overflow-hidden'>
+
+      <div className='absolute top-1/4 left-1/4 w-96 h-96 bg-blue-600/15 rounded-full blur-3xl pointer-events-none'></div>
+      <div className='absolute bottom-1/4 right-1/4 w-80 h-80 bg-purple-600/10 rounded-full blur-3xl pointer-events-none'></div>
+
+      <div className='w-full max-w-md relative z-10'>
+
+        {/* Logo */}
+        <div className='text-center mb-8'>
+          <div className='inline-flex items-center gap-3'>
+            <div className='w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center shadow-lg'>
+              <span className='text-white font-bold'>P</span>
+            </div>
+            <span className='text-white font-bold text-2xl'>Prescripto</span>
+          </div>
+          <p className='text-slate-500 text-sm mt-2'>Dashboard Panel</p>
         </div>
 
-        <button
-          className="bg-primary text-white w-full py-2 rounded-md text-lg flex items-center justify-center gap-2 disabled:opacity-70"
-          disabled={loading}
-        >
-          {loading ? (
-            <>
-              Loading
-              <div className="h-2 w-2 rounded-full bg-white animate-bounce"></div>
-              <div
-                className="h-2 w-2 rounded-full bg-white animate-bounce"
-                style={{ animationDelay: "0.2s" }}
-              ></div>
-              <div
-                className="h-2 w-2 rounded-full bg-white animate-bounce"
-                style={{ animationDelay: "0.4s" }}
-              ></div>
-            </>
-          ) : (
-            "Login"
-          )}
-        </button>
+        <div className='glass-card p-8'>
 
-        {state === "Admin" ? (
-          <p className="text-sm font-medium">
-            Doctor Login? {""}
-            <span
-              className="text-primary underline cursor-pointer"
-              onClick={() => setState("Doctor")}
+          <div className='mb-8'>
+            <h2 className='text-2xl font-bold text-white mb-2'>
+              {state} Login 🔐
+            </h2>
+            <p className='text-slate-400 text-sm'>
+              Sign in to access your {state.toLowerCase()} dashboard
+            </p>
+          </div>
+
+          {/* Toggle */}
+          <div className='flex bg-white/5 rounded-xl p-1 mb-6 border border-white/10'>
+            {['Admin', 'Doctor'].map((tab) => (
+              <button
+                key={tab}
+                onClick={() => setState(tab)}
+                className={`flex-1 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 ${
+                  state === tab
+                    ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-lg'
+                    : 'text-slate-400 hover:text-white'
+                }`}
+              >
+                {tab}
+              </button>
+            ))}
+          </div>
+
+          <form onSubmit={onSubmitHandler} className='space-y-4'>
+            <div>
+              <label className='text-slate-400 text-sm mb-2 block'>Email Address</label>
+              <input
+                type='email'
+                placeholder='admin@prescripto.com'
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className='dark-input'
+                required
+              />
+            </div>
+
+            <div>
+              <label className='text-slate-400 text-sm mb-2 block'>Password</label>
+              <div className='relative'>
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  placeholder='••••••••'
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className='dark-input pr-12'
+                  required
+                />
+                <button
+                  type='button'
+                  onClick={() => setShowPassword(!showPassword)}
+                  className='absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white text-sm'
+                >
+                  {showPassword ? '🙈' : '👁️'}
+                </button>
+              </div>
+            </div>
+
+            <button
+              type='submit'
+              disabled={loading}
+              className='btn-primary w-full py-4 text-base mt-2 disabled:opacity-50'
             >
-              Click Here
-            </span>
-          </p>
-        ) : (
-          <p className="text-sm font-medium">
-            Admin Login?{""}
-            <span
-              className="text-primary underline cursor-pointer"
-              onClick={() => setState("Admin")}
-            >
-              Click Here
-            </span>
-          </p>
-        )}
+              {loading ? 'Signing in...' : `Sign In as ${state} →`}
+            </button>
+          </form>
+        </div>
       </div>
-    </form>
-  );
-};
+    </div>
+  )
+}
 
-export default Login;
+export default Login
+
