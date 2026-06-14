@@ -36,7 +36,7 @@ const App = () => {
         <div className="flex-1">
           <Routes>
             {/* Admin Routes */}
-            <Route path="/" element={<Dashbaord />} />
+            <Route path="/" element={dToken && !aToken ? <DoctorDashboard /> : <Dashbaord />} />
             <Route path="/all-appointments" element={<AllAppointments />} />
             <Route path="/add-doctor" element={<AddDoctor />} />
             <Route path="/doctors-list" element={<DoctorsList />} />
