@@ -69,7 +69,7 @@ const Navbar = () => {
         {/* Right Side */}
         <div className='flex items-center gap-3'>
           <button
-           onClick={() => window.open('http://localhost:5174', '_blank')}
+           onClick={() => window.open('https://mediconnect-admin-zeta.vercel.app', '_blank')}
             className='hidden md:flex items-center gap-2 px-4 py-2 rounded-lg border border-white/10 text-slate-400 hover:text-white hover:border-white/20 text-sm font-medium transition-all duration-200'
           >
             <span>⚙️</span>
