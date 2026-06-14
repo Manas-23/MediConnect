@@ -61,7 +61,7 @@ const Footer = () => {
         <div className='divider'></div>
 
         <div className='flex flex-col md:flex-row justify-between items-center gap-4'>
-          <p className='text-slate-500 text-sm'>© 2025 Prescripto. All rights reserved.</p>
+          <p className='text-slate-500 text-sm'>© 2026 Prescripto. All rights reserved.</p>
           <div className='flex gap-6'>
             {['Privacy Policy', 'Terms of Service', 'Cookie Policy'].map((item, i) => (
               <span key={i} className='text-slate-500 hover:text-slate-300 text-sm cursor-pointer transition-colors'>
