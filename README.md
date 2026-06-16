@@ -13,10 +13,10 @@
 
 _This project demonstrates a comprehensive hospital management solution, supporting an intuitive user experience, robust role-specific features, and secure online payments, providing seamless interaction for patients, doctors, and administrators._
 
-**Live Preview** : https://hms-frontend-kappa.vercel.app/
+**Live Preview** : https://mediconnect-frontend-psi.vercel.app/
 <br/>
 <br/>
-**Admin/Doctor Portal** : https://hms-admin-nine.vercel.app/
+**Admin/Doctor Portal** : https://mediconnect-admin-zeta.vercel.app/
 
 ## Here are some references images
 
@@ -70,22 +70,6 @@ _This project demonstrates a comprehensive hospital management solution, support
 
 <img src="frontend/src/readme_images/adminAllDoctor.png" alt="All Doctors" style="padding:0 10px;"/>
 
-## Doctor Section
 
-### Doctor Login
 
-<img src="frontend/src/readme_images/doctorLogin.png" alt="Doctor Login" style="padding:0 10px;"/>
-
-### Doctor Dashboard
-
-<img src="frontend/src/readme_images/doctorDashboard.png" alt="Doctor Dashboard" style="padding:0 10px;"/>
-
-### Doctor Appointments
-
-<img src="frontend/src/readme_images/doctorAppointmnets.png" alt="Doctor Appointments" style="padding:0 10px;"/>
-
-### Doctor Profile
-
-<img src="frontend/src/readme_images/doctorProfile.png" alt="Doctor Profile" style="padding:0 10px;"/>
-
-### Thank You for Visiting 🎊 🎉 🙏
+### Thank You for Visiting 🙏
