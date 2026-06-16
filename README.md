@@ -3,7 +3,7 @@
 ## This is a Fullstack Hospital Management System project built using the MERN stack, with three distinct user roles: User, Doctor, and Admin.
 
 1. **User Features**:
-   Users can register or log in to explore the list of available doctors by their specializations. They can easily book appointments, make payments online through Razorpay, and view all upcoming and past appointments. Users can also update their personal information in the "My Profile" section.
+   Users can register or log in to explore the list of available doctors by their specializations. They can easily book appointments, make payments online through Stripe, and view all upcoming and past appointments. Users can also update their personal information in the "My Profile" section.
 
 2. **Doctor Features**:
    Doctors can log in to view and manage their appointments and update their profiles. Through their personalized dashboard, they can track total earnings, the number of appointments, and patient interactions. Doctors have the option to complete or cancel appointments directly from their dashboard, enabling efficient appointment management.
